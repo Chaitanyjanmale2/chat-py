@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SocketIO Example</title>
+  </head>
+  <body>
+    <h1>SocketIO Example</h1>
+    <input type="text" id="messageInput" placeholder="Type your message" />
+    <button onclick="sendMessage()">Send</button>
+    <ul id="messages"></ul>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.1/socket.io.js"
+      integrity="sha512-Z6C1p1NIexPj5MsVUunW4pg7uMX6/TT3CUVldmjXx2kpip1eZcrAnxIusDxyFIikyM9A61zOVNgvLr/TGudOQg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      var socket = io.connect('wss://chaitanybj.pythonanywhere.com', {
+        headers: {
+          'user-agent': 'chrome',
+        },
+      })
+
+      socket.on('message', function (data) {
+        var li = document.createElement('li')
+        li.textContent = data
+        document.getElementById('messages').appendChild(li)
+      })
+
+      function sendMessage() {
+        var message = document.getElementById('messageInput').value
+        socket.emit('message', message)
+        document.getElementById('messageInput').value = ''
+      }
+    </script>
+  </body>
+</html>
